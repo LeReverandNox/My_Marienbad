@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My_Marienbad</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="style/style.css">
+</head>
+<body>
+    <div class="main_wrapper">
+        <header class="main_header">
+            <h1>My_marienbad</h1>
+            <h2>Un jeu avec des allumettes qu'il est fun...</h2>
+            <a href="views/help.html" target="_blank">HELP !</a>
+        </header>
+        <section class="main_section">
+            <div class="game">
+
+                <?php displayError(); ?>
+
+                <div class="display_score">
+                    <ul>
+                        <li>Nbr de parties jouées : <?php echo $_SESSION["game_count"] ?></li>
+                        <li>Ratio de victoire J1 : <?php echo calculateRatio("1"); ?> %</li>
+                        <li>Ratio de victoire J2 : <?php echo calculateRatio("2"); ?> %</li>
+                    </ul>
+                </div>
+
+                <?php if ($_SESSION["first_step"]): ?>
+                    <form method="POST" class="game_choose_player">
+                        <p>Contre qui voulez-vous jouer ?</p>
+                        <ul>
+                            <li><input type="radio" name="second_player_type" value="human" checked /> Un humain</li>
+                            <li><input type="radio" name="second_player_type" value="bot" disabled/> Un bot (A VENIR !)</li>
+                        </ul>
+                        <p>Qui jouera en premier ?</p>
+                        <ul>
+                            <li>
+                                <input type="radio" name="first_player" value="1" checked /> Joueur 1
+                            </li>
+                            <li>
+                                <input type="radio" name="first_player" value="2" checked /> Joueur 2
+                            </li>
+                            <li>
+                                <input type="radio" name="first_player" value="random" checked /> OSEF
+                            </li>
+                            <li class="begin_button">
+                                <input type="hidden" name="begin">
+                                <input type="submit" value="En route !" />
+                            </li>
+                        </ul>
+                    </form>
+                <?php endif ?>
+
+                <?php if ($_SESSION["on_game"]): ?>
+
+                    <ul class="display_holder">
+                        <li class="infos_list">
+                            C'est le tour du Joueur n.<?php echo $_SESSION["turn"]; ?>
+                        </li>
+                    </ul>
+
+
+                    <form class="game_form" method="POST">
+                        <div class="game_row row_1">
+                            <div class="game_allumette">
+                                <label for="r0a0">
+                                    <div class="game_img <?php echo $state = ($grid[0][0]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r0a0" id="r0a0" value="1" <?php echo $state = ($grid[0][0]) ? "" : "disabled" ?> />
+                            </div>
+                        </div>
+                        <div class="game_row row_2">
+                            <div class="game_allumette">
+                                <label for="r1a0">
+                                    <div class="game_img <?php echo $state = ($grid[1][0]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r1a0" id="r1a0" value="2" <?php echo $state = ($grid[1][0]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r1a1">
+                                    <div class="game_img <?php echo $state = ($grid[1][1]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r1a1" id="r1a1" value="3" <?php echo $state = ($grid[1][1]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r1a2">
+                                    <div class="game_img <?php echo $state = ($grid[1][2]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r1a2" id="r1a2" value="4" <?php echo $state = ($grid[1][2]) ? "" : "disabled" ?> />
+                            </div>
+                        </div>
+                        <div class="game_row row_3">
+                            <div class="game_allumette">
+                                <label for="r2a0">
+                                    <div class="game_img <?php echo $state = ($grid[2][0]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r2a0" id="r2a0" value="5" <?php echo $state = ($grid[2][0]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r2a1">
+                                    <div class="game_img <?php echo $state = ($grid[2][1]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r2a1" id="r2a1" value="6" <?php echo $state = ($grid[2][1]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r2a2">
+                                    <div class="game_img <?php echo $state = ($grid[2][2]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r2a2" id="r2a2" value="7" <?php echo $state = ($grid[2][2]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r2a3">
+                                    <div class="game_img <?php echo $state = ($grid[2][3]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r2a3" id="r2a3" value="8" <?php echo $state = ($grid[2][3]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r2a4">
+                                    <div class="game_img <?php echo $state = ($grid[2][4]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r2a4" id="r2a4" value="9" <?php echo $state = ($grid[2][4]) ? "" : "disabled" ?> />
+                            </div>
+                        </div>
+                        <div class="game_row row_4">
+                            <div class="game_allumette">
+                                <label for="r3a0">
+                                    <div class="game_img <?php echo $state = ($grid[3][0]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a0" id="r3a0" value="10" <?php echo $state = ($grid[3][0]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r3a1">
+                                    <div class="game_img <?php echo $state = ($grid[3][1]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a1" id="r3a1" value="12" <?php echo $state = ($grid[3][1]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r3a2">
+                                    <div class="game_img <?php echo $state = ($grid[3][2]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a2" id="r3a2" value="13" <?php echo $state = ($grid[3][2]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r3a3">
+                                    <div class="game_img <?php echo $state = ($grid[3][3]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a3" id="r3a3" value="14" <?php echo $state = ($grid[3][3]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r3a4">
+                                    <div class="game_img <?php echo $state = ($grid[3][4]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a4" id="r3a4" value="15" <?php echo $state = ($grid[3][4]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r3a5">
+                                    <div class="game_img <?php echo $state = ($grid[3][5]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a5" id="r3a5" value="16" <?php echo $state = ($grid[3][5]) ? "" : "disabled" ?> />
+                            </div>
+                            <div class="game_allumette">
+                                <label for="r3a6">
+                                    <div class="game_img <?php echo $state = ($grid[3][6]) ? "on" : "off" ?>"></div>
+                                </label>
+                                <input type="checkbox" name="r3a6" id="r3a6" value="17" <?php echo $state = ($grid[3][6]) ? "" : "disabled" ?> />
+                            </div>
+                        </div>
+
+                        <ul class="game_form_submit">
+                            <li>
+                                <input type="hidden" name="jouer" />
+                                <input type="submit" value="Jouer !" <?php echo (isset($_SESSION["endgame"])) ? "disabled" : "" ?> />
+                            </li>
+                        </ul>
+                    </form>
+                <?php endif ?>
+
+                <form method="POST" class="game_form_reset">
+                    <ul>
+                        <li class="reset_button">
+                            <input type="hidden" name="reset" />
+                            <input type="submit" value="Rejouer"/>
+                        </li>
+                    </ul>
+                </form>
+
+            </div>
+        </section>
+
+        <footer class="main_footer">
+            <p>P0wn3d by Rodolphe Laidet</p>
+        </footer>
+
+    </div>
+</body>
+</html>
